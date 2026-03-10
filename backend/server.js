@@ -10,7 +10,7 @@ const Game = require('./classes/Game');
 const app = express();
 
 // 2. Allow React app to connect
-app.use(cors({ origin: 'http://localhost:5173' }));
+app.use(cors({ origin: 'https://skribbl-frontend-5af0.onrender.com/' || '*' }));
 app.use(express.json());
 
 // 3. Wrap express in an HTTP server (Socket.IO needs this)
@@ -19,7 +19,7 @@ const server = http.createServer(app);
 // 4. Attach Socket.IO to the HTTP server
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:5173',
+    origin: 'https://skribbl-frontend-5af0.onrender.com/' || '*',
     methods: ['GET', 'POST'],
   },
 });
