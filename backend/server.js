@@ -8,9 +8,10 @@ const Game = require('./classes/Game');
 
 // 1. Create express app
 const app = express();
+const FRONTEND_URL = 'https://skribbl-frontend-5af0.onrender.com';
 
 // 2. Allow React app to connect
-app.use(cors({ origin: 'https://skribbl-frontend-5af0.onrender.com/' || '*' }));
+app.use(cors({ origin: FRONTEND_URL }));
 app.use(express.json());
 
 // 3. Wrap express in an HTTP server (Socket.IO needs this)
@@ -19,7 +20,7 @@ const server = http.createServer(app);
 // 4. Attach Socket.IO to the HTTP server
 const io = new Server(server, {
   cors: {
-    origin: 'https://skribbl-frontend-5af0.onrender.com/' || '*',
+    origin: FRONTEND_URL,
     methods: ['GET', 'POST'],
   },
 });
@@ -144,7 +145,7 @@ io.on('connection', (socket) => {
     socket.to(roomId).emit('canvas_redraw', { strokes });
   });
 
-  // START GAME (host only) 
+  // START GAME (host only)
   socket.on('start_game', ({ roomId }) => {
     const room = rooms[roomId];
     if (!room) return;
@@ -157,7 +158,7 @@ io.on('connection', (socket) => {
     io.to(roomId).emit('game_started', {});
   });
 
-  // DRAWER CHOOSES WORD 
+  // DRAWER CHOOSES WORD
   socket.on('word_chosen', ({ roomId, word }) => {
     const game = games[roomId];
     if (!game) return;
